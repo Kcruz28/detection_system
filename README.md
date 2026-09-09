@@ -4,6 +4,14 @@
 
 ## Setup
 
+This project uses [`uv`](https://docs.astral.sh/uv/) for dependency management. Install uv first, then set up the project:
+
+```bash
+uv sync
+```
+
+This creates a `.venv/` and installs everything from `pyproject.toml`/`uv.lock`. Run any project command through `uv run ...` (as shown below) so it uses this environment.
+
 ## Dataset
 
 Dataset comes from [Roboflow Universe](https://universe.roboflow.com) — search
@@ -16,7 +24,7 @@ Dataset comes from [Roboflow Universe](https://universe.roboflow.com) — search
 2. Pick a dataset on Roboflow Universe and note its workspace/project/version
    (from the dataset URL), then download it in YOLOv8-compatible format (still correct for YOLO26) into `data/raw/`:
    ```bash
-   python scripts/download_dataset.py --workspace <ws> --project <project> --version <n>
+   uv run python scripts/download_dataset.py --workspace <ws> --project <project> --version <n>
    ```
 3. Roboflow's export includes its own `data.yaml`. Update `configs/data.yaml`
    (paths + class names) to match it — that file is used by both training and
@@ -28,8 +36,8 @@ Hyperparameters (model size, epochs, batch, image size, etc.) live in
 `configs/train_config.yaml` so they're decoupled from code.
 
 ```bash
-python scripts/train.py                                   # use config as-is
-python scripts/train.py --epochs 50 --batch 32 --model yolo26s.pt   # CLI overrides
+uv run python scripts/train.py                                   # use config as-is
+uv run python scripts/train.py --epochs 50 --batch 32 --model yolo26s.pt   # CLI overrides
 ```
 
 Training logs, plots, and checkpoints land under `outputs/train/`; the best
@@ -38,10 +46,22 @@ checkpoint is also copied to `models/best.pt`.
 To evaluate a trained checkpoint (mAP, precision, recall, inference FPS):
 
 ```bash
-python scripts/evaluate.py --weights models/best.pt --split val
+uv run python scripts/evaluate.py --weights models/best.pt --split val
 ```
 
 Results print to the console and save to `outputs/eval_metrics.json`.
+
+## Training on Colab
+
+No local GPU? `notebooks/train_colab.ipynb` runs the same `scripts/download_dataset.py`,
+`scripts/train.py`, and `scripts/evaluate.py` on a free Google Colab GPU (T4) instead of
+duplicating training logic in the notebook. Open it directly via the Colab badge at the
+top of the notebook, or upload it to https://colab.research.google.com.
+
+Use `scripts/train.py` locally (as documented above) if you have a usable GPU on your own
+machine; use the Colab notebook when you don't. Colab VMs are ephemeral, so the notebook
+also covers (optionally) mounting Google Drive to persist the dataset and `models/best.pt`
+across sessions.
 
 ## Demo
 
@@ -55,8 +75,8 @@ app will tell you to train one instead of erroring out.
 **Run it:**
 
 ```bash
-pip install -r requirements.txt
-streamlit run frontend/app.py
+uv sync
+uv run streamlit run frontend/app.py
 ```
 
 **Features:**
