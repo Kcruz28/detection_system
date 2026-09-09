@@ -1,0 +1,22 @@
+# Training hyperparameters for scripts/train.py.
+# Kept separate from code so runs are reproducible/tweakable without editing Python.
+
+data: configs/data.yaml   # path to YOLO dataset config
+
+model: yolo26n.pt          # base checkpoint to fine-tune from; e.g. yolo26n/s/m/l/x.pt
+epochs: 100
+imgsz: 640
+batch: 16
+patience: 20                # early stopping patience (epochs with no improvement)
+device: 0                   # GPU index, or "cpu"
+workers: 8
+
+project: outputs/train       # where Ultralytics writes run artifacts/logs
+name: drone_yolo26           # run name -> outputs/train/drone_yolo26/
+
+optimizer: auto              # auto, SGD, Adam, AdamW, etc.
+lr0: 0.01                    # initial learning rate
+seed: 0
+
+# Where to copy the best checkpoint after training finishes.
+export_weights_path: models/best.pt

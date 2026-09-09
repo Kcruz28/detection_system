@@ -1,0 +1,20 @@
+# YOLO dataset config -- FALLBACK / TEMPLATE (works for YOLO26; format unchanged from YOLOv8).
+#
+# Roboflow exports (via scripts/download_dataset.py) normally drop their own
+# data.yaml directly into the downloaded dataset folder under data/raw/,
+# already pointing at the correct train/val/test splits and class names for
+# whatever dataset you picked. Prefer that generated file once it exists.
+#
+# This file is a placeholder so the repo has a working config before you've
+# downloaded anything, and a reference for the shape train.py/evaluate.py
+# expect. Update the paths and `names` below to match your actual dataset
+# (or symlink/copy the Roboflow-generated data.yaml over this file).
+
+path: ../data/raw/drone-detection-dataset  # dataset root, relative to this file
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 1
+names:
+  - drone

@@ -1,0 +1,16 @@
+ultralytics>=8.4.0  # needs a recent release for YOLO26 support
+opencv-python
+numpy
+roboflow
+pyyaml
+streamlit
+
+# Tracking exercise (see docs/lessons/tracking_bytetrack_deepsort.md):
+# scipy.optimize.linear_sum_assignment solves the Hungarian/assignment
+# problem, needed for the IoU-matching warm-up regardless of which
+# tracker you build. It's small and generically useful, so it's added
+# now. `supervision` (ByteTrack) and `deep-sort-realtime` (DeepSORT) are
+# intentionally NOT added here yet -- they're heavier, tracker-specific,
+# and the point of the exercise is to install/wire one deliberately as
+# you build it, per the lesson doc's setup steps.
+scipy
